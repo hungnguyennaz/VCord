@@ -371,17 +371,27 @@ public final class UserConnection implements ProxiedPlayer
                     future.channel().close();
                     pendingConnects.remove( target );
 
-                    ServerInfo def = updateAndGetNextServer( target );
-                    if ( request.isRetry() && def != null && ( getServer() == null || def != getServer().getInfo() ) )
+                    InetSocketAddress updated = (InetSocketAddress) Util.getAddr( target.getAddress().getHostName() + ":" + target.getAddress().getPort() );
+                    if ( !updated.getAddress().getHostAddress().equals( target.getAddress().getAddress().getHostAddress() ) )
                     {
-                        sendMessage( bungee.getTranslation( "fallback_lobby" ) );
-                        connect( def, null, true, ServerConnectEvent.Reason.LOBBY_FALLBACK );
-                    } else if ( dimensionChange )
-                    {
-                        disconnect( bungee.getTranslation( "fallback_kick", connectionFailMessage( future.cause() ) ) );
+                        ProxyServer.getInstance().getConfig().updateServerIPs();
+                        System.out.println( "[VCord] Trying to update server IPs..." );
+
+                        connect( ProxyServer.getInstance().getServerInfo( target.getName() ), null, false, ServerConnectEvent.Reason.UNKNOWN );
                     } else
                     {
-                        sendMessage( bungee.getTranslation( "fallback_kick", connectionFailMessage( future.cause() ) ) );
+                        ServerInfo def = updateAndGetNextServer( target );
+                        if ( request.isRetry() && def != null && ( getServer() == null || def != getServer().getInfo() ) )
+                        {
+                            sendMessage( bungee.getTranslation( "fallback_lobby" ) );
+                            connect( def, null, true, ServerConnectEvent.Reason.LOBBY_FALLBACK );
+                        } else if ( dimensionChange )
+                        {
+                            disconnect( bungee.getTranslation( "fallback_kick", future.cause().getClass().getName() ) );
+                        } else
+                        {
+                            sendMessage( bungee.getTranslation( "fallback_kick", future.cause().getClass().getName() ) );
+                        }
                     }
                 }
             }
