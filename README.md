@@ -1,2 +1,2 @@
 # VCord
-VietProtect Waterfall Fork with added DynDNS support.
+VietProtect BungeeCord Fork with added DynDNS support.
