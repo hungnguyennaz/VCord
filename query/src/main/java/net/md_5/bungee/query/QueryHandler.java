@@ -103,7 +103,7 @@ public class QueryHandler extends SimpleChannelInboundHandler<DatagramPacket>
                 // Short response
                 writeString( out, listener.getMotd() ); // MOTD
                 writeString( out, "SMP" ); // Game Type
-                writeString( out, "BungeeCord_Proxy" ); // World Name
+                writeString( out, "VietProtect_VProxy" ); // World Name
                 writeNumber( out, bungee.getOnlineCount() ); // Online Count
                 writeNumber( out, listener.getMaxPlayers() ); // Max Players
                 writeShort( out, listener.getHost().getPort() ); // Port
@@ -124,7 +124,7 @@ public class QueryHandler extends SimpleChannelInboundHandler<DatagramPacket>
                 data.put( "version", bungee.getGameVersion() );
                 data.put( "plugins", "" );
                 // End Extra Info
-                data.put( "map", "BungeeCord_Proxy" );
+                data.put( "map", "VietProtect_VProxy" );
                 data.put( "numplayers", Integer.toString( bungee.getOnlineCount() ) );
                 data.put( "maxplayers", Integer.toString( listener.getMaxPlayers() ) );
                 data.put( "hostport", Integer.toString( listener.getHost().getPort() ) );
